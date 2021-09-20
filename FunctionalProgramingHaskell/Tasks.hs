@@ -155,6 +155,74 @@ helperminus (-1) a b = b
 helperminus n a b = helperminus (n + 1) (b) (a - b) 
 
 
+-------------------------------------------------CS1.6.06-------------------------------------------------
+{-
+Реализуйте функцию seqA, находящую элементы следующей рекуррентной последовательности
+
+a_0 = 1; a_1 = 2 ; a_2 = 3; a_k+3 = a_k+2 + a_k+1 - 2 a_k.
+Попытайтесь найти эффективное решение.
+
+GHCi> seqA 301
+1276538859311178639666612897162414
+-}
+
+seqA :: Integer -> Integer
+seqA n = helper n 1 2 3
+
+helper 0 b c d = b
+helper 1 b c d = c
+helper 2 b c d = d
+
+helper a b c d = helper (a - 1) c d (d + c - 2 * b)
+
+
+-------------------------------------------------CS1.6.08-------------------------------------------------
+{-
+Реализуйте функцию, находящую сумму и количество цифр десятичной записи заданного целого числа.
+
+sum'n'count :: Integer -> (Integer, Integer)
+sum'n'count x = undefined
+GHCi> sum'n'count (-39)
+(12,2)
+-}
+
+sum'n'count :: Integer -> (Integer, Integer)
+sum'n'count x = (sum, count)
+    where (sum, count) = helper (abs(x) `div` 10) (abs(x) `mod` 10) (0)
+helper 0 sum count = (sum, count + 1)
+helper xd sum count = helper (xd `div` 10) (sum + xd `mod` 10) (count + 1)
+
+
+-------------------------------------------------CS1.6.09-------------------------------------------------
+{-
+Реализуйте функцию, находящую значение определённого интеграла от заданной функции ff на заданном интервале
+[a,b][a,b] методом трапеций. (Используйте равномерную сетку; достаточно 1000 элементарных отрезков.)
+
+integration :: (Double -> Double) -> Double -> Double -> Double
+integration f a b = undefined
+GHCi> integration sin pi 0
+-2.0
+Результат может отличаться от -2.0, но не более чем на 1e-4.
+-}
+
+integration :: (Double -> Double) -> Double -> Double -> Double
+integration f a b = helper f a b ((b-a)/1000) 1 (a + ((b-a)/1000)) 0
+
+helper f a b h 1000 xi sum = (h/2)*(sum + f(a) + f(b))
+helper f a b h n xi sum = helper f a b h (n + 1) (xi + h) (sum + 2*f(xi))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
